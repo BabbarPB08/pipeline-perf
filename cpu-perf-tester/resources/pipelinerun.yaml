@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: cpu-intensive-run
-  namespace: pipeline-pref
+  namespace: pipeline-perf
 spec:
   pipelineRef:
     name: cpu-intensive-pipeline
