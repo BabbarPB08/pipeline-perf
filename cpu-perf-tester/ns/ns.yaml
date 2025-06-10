@@ -2,12 +2,12 @@ apiVersion: project.openshift.io/v1
 kind: Project
 metadata:
   labels:
-    kubernetes.io/metadata.name: pipeline-pref
+    kubernetes.io/metadata.name: pipeline-perf
     pod-security.kubernetes.io/audit: baseline
     pod-security.kubernetes.io/audit-version: latest
     pod-security.kubernetes.io/warn: baseline
     pod-security.kubernetes.io/warn-version: latest
-  name: pipeline-pref
+  name: pipeline-perf
 spec:
   finalizers:
   - kubernetes
