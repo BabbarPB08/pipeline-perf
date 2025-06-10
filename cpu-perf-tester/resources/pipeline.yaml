@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: cpu-intensive-pipeline
-  namespace: pipeline-pref
+  namespace: pipeline-perf
 spec:
   workspaces:
     - name: shared-data
