@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: benchmark-script
-  namespace: pipeline-pref
+  namespace: pipeline-perf
 data:
   run.py: |
     import time
