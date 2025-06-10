@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: benchmark-script
+  namespace: pipeline-pref
+data:
+  run.py: |
+    import time
+    import numpy as np
+    from datetime import datetime
+    import sys
+    from tabulate import tabulate
+    
+    def log(msg):
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}")
+        sys.stdout.flush()
+    
+    def benchmark():
+        size = 1000
+        log("Starting matrix multiplication benchmark...")
+    
+        A = np.random.rand(size, size)
+        B = np.random.rand(size, size)
+    
+        start = time.time()
+        np.dot(A, B)
+        duration = time.time() - start
+    
+        result = [
+            ["Matrix Size", f"{size} x {size}"],
+            ["Time Taken (sec)", f"{duration:.2f}"],
+            ["Speed", f"{(size**3 / duration) / 1e6:.2f} MegaOps/sec"]
+        ]
+    
+        log("Benchmark Result:")
+        print(tabulate(result, tablefmt="grid"))
+        sys.stdout.flush()
+    
+    if __name__ == "__main__":
+        log("=== Benchmark Script Start ===")
+        benchmark()
+        log("=== Benchmark Script End ===")
+    

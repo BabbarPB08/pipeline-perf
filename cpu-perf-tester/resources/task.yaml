@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: cpu-intensive-task
+  namespace: pipeline-pref
+spec:
+  workspaces:
+    - name: shared-data
+  steps:
+    - name: copy-script
+      image: registry.access.redhat.com/ubi8/ubi-minimal
+      script: |
+        #!/bin/sh
+        mkdir -p /workspace/shared-data/scripts
+        cp /config/run.py /workspace/shared-data/scripts/
+      volumeMounts:
+        - name: config-volume
+          mountPath: /config
+
+    - name: run-benchmark
+      image: registry.redhat.io/ubi9/python-311@sha256:bb88b4e3c323a908a340b9ede5a863aa33395878d104fe44a6cbb5400d6b9c96
+      workingDir: /workspace/shared-data/scripts
+      script: |
+        #!/bin/bash
+        set -e
+        echo "Installing required Python packages..."
+        pip install --quiet numpy tabulate
+
+        echo "Running CPU benchmark..."
+        python run.py
+
+        echo -e "\nSystem C-State Info:"
+        if [ -f /sys/module/intel_idle/parameters/max_cstate ]; then
+          cat /sys/module/intel_idle/parameters/max_cstate
+        else
+          echo "max_cstate file not found. This system may not support intel_idle."
+        fi
+  volumes:
+    - name: config-volume
+      configMap:
+        name: benchmark-script
+

@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: cpu-intensive-run
+  namespace: pipeline-pref
+spec:
+  pipelineRef:
+    name: cpu-intensive-pipeline
+  workspaces:
+    - name: shared-data
+      emptyDir: {}
+

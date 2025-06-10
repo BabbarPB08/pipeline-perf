@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: cpu-intensive-pipeline
+  namespace: pipeline-pref
+spec:
+  workspaces:
+    - name: shared-data
+  tasks:
+    - name: run-benchmark
+      taskRef:
+        name: cpu-intensive-task
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+
